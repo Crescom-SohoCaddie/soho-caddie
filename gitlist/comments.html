@@ -47,7 +47,7 @@
   }
   .table-striped>tbody>tr:nth-child(odd)>td,
   .table-striped>tbody>tr:nth-child(odd)>th {
-      background-color: #F6FFF6; // Choose your own color here
+      background-color: #F6FFF6; 　/* Choose your own color here */
   }
 
 </style>
@@ -69,7 +69,8 @@
         ]"
       >
         <template v-slot:cell(title)="data">
-          <b-badge variant="info">{{data.item.title}}</b-badge>
+          <b-badge variant="warning"><a :href="data.item.html_url">{{data.item.title}}</a>
+          </b-badge>
           {{data.item.body}}
         </template>
       </b-table>
