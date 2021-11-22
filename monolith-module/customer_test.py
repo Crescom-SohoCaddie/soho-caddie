@@ -1,8 +1,9 @@
-from logging import captureWarnings
 from app import db, app
 from models import *
 import unittest
 import subprocess
+import freezegun
+from datetime import datetime
 
 
 class BasicTest(unittest.TestCase):
@@ -62,6 +63,11 @@ class BasicTest(unittest.TestCase):
 
         customer = Customer.query.filter(Customer.id == 3).all()
         self.assertGreaterEqual(len(customer), 0)
+
+    @freezegun.freeze_time('2020-1-1 10:00:00')
+    def test_datetime(self):
+        print('---日時のテスト---')
+        self.assertEqual(datetime.now(), datetime(2020, 1, 1, 10, 0, 0))
 
 
 if __name__ == '__main__':
