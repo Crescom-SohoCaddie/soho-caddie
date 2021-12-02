@@ -18,9 +18,9 @@ class BasicTest(unittest.TestCase):
         print("---tearDown---")
         seeder()
 
-    def test_get_quotaions(self):
-        print('---Quotaion全件読み込み---')
-        quotations = Quotaion.query.all()
+    def test_get_quotations(self):
+        print('---Quotation全件読み込み---')
+        quotations = Quotation.query.all()
         quotationCount = len(quotations)
         self.assertTrue(quotationCount)
 
@@ -36,59 +36,59 @@ class BasicTest(unittest.TestCase):
         print('Quotation→Quotation_Item全件取得')
         quotationItemCount = 0
         for quotation in quotations:
-            for quotationItem in quotation.quotaion_items:
+            for quotationItem in quotation.quotation_items:
                 quotationItemCount += 1
         self.assertGreaterEqual(quotationItemCount, 1)
 
     def test_get_quotations_dict(self):
         print('---Quotation全件読込→Dict---')
-        quotations = Quotaion.query.all()
-        sch = QuotaionSchema(many=True).dump(quotations)
+        quotations = Quotation.query.all()
+        sch = QuotationSchema(many=True).dump(quotations)
         self.assertEqual(sch[0]['title'], '○○株式会社への見積書')
 
-    def test_get_quotaion_byId(self):
-        print('---Quotaion一件読み込み---')
-        quotaion = Quotaion.query.filter(Quotaion.id == 1).first()
-        self.assertTrue(quotaion)
-        self.assertEqual(quotaion.title, '○○株式会社への見積書')
+    def test_get_quotation_byId(self):
+        print('---Quotation一件読み込み---')
+        quotation = Quotation.query.filter(Quotation.id == 1).first()
+        self.assertTrue(quotation)
+        self.assertEqual(quotation.title, '○○株式会社への見積書')
 
-        print('---Quotaion一件読み込み失敗---')
-        quotaions = Quotaion.query.filter(Quotaion.id == 9999).all()
-        self.assertFalse(quotaions)
-        self.assertEqual(len(quotaions), 0)
+        print('---Quotation一件読み込み失敗---')
+        quotations = Quotation.query.filter(Quotation.id == 9999).all()
+        self.assertFalse(quotations)
+        self.assertEqual(len(quotations), 0)
 
-    def test_update_quotaion(self):
-        print('---Quotaion一件更新---')
-        quotaion = Quotaion.query.filter(Quotaion.id == 2).first()
-        quotaion.title = '××株式会社への見積書'
+    def test_update_quotation(self):
+        print('---Quotation一件更新---')
+        quotation = Quotation.query.filter(Quotation.id == 2).first()
+        quotation.title = '××株式会社への見積書'
         db.session.commit()
-        quotaion = Quotaion.query.filter(Quotaion.id == 2).first()
-        self.assertEqual(quotaion.title, "××株式会社への見積書")
+        quotation = Quotation.query.filter(Quotation.id == 2).first()
+        self.assertEqual(quotation.title, "××株式会社への見積書")
 
-    def test_create_quotaion(self):
-        print('---Quotaion新規作成---')
-        quotaions = [
-            Quotaion(customerId=1, applyNumber=1000004, applyDate=datetime.now(), expiry=datetime.now(),
-                     title='○○建設への見積書', memo='これは見積書のメモです', remarks='これは見積書の備考です', isTaxExp=True),
-            Quotaion(customerId=1, applyNumber=1000005, applyDate=datetime.now(), expiry=datetime.now(),
-                     title='○○商店への見積書', memo='これは見積書のメモです', remarks='これは見積書の備考です', isTaxExp=True),
+    def test_create_quotation(self):
+        print('---Quotation新規作成---')
+        quotations = [
+            Quotation(customerId=1, applyNumber=1000004, applyDate=datetime.now(), expiry=datetime.now(),
+                      title='○○建設への見積書', memo='これは見積書のメモです', remarks='これは見積書の備考です', isTaxExp=True),
+            Quotation(customerId=1, applyNumber=1000005, applyDate=datetime.now(), expiry=datetime.now(),
+                      title='○○商店への見積書', memo='これは見積書のメモです', remarks='これは見積書の備考です', isTaxExp=True),
         ]
-        db.session.add_all(quotaions)
+        db.session.add_all(quotations)
         db.session.commit()
-        self.assertGreaterEqual(len(Quotaion.query.all()), 2)
+        self.assertGreaterEqual(len(Quotation.query.all()), 2)
 
-    def test_delete_quotaion(self):
-        print('---Quotaion一件削除---')
-        quotaion = Quotaion(customerId=1, applyNumber=1000006, applyDate=datetime.now(), expiry=datetime.now(),
-                            title='○○株式会社への見積書', memo='これは見積書のメモです', remarks='これは見積書の備考です', isTaxExp=True)
-        db.session.add(quotaion)
+    def test_delete_quotation(self):
+        print('---Quotation一件削除---')
+        quotation = Quotation(customerId=1, applyNumber=1000006, applyDate=datetime.now(), expiry=datetime.now(),
+                              title='○○株式会社への見積書', memo='これは見積書のメモです', remarks='これは見積書の備考です', isTaxExp=True)
+        db.session.add(quotation)
         db.session.commit()
-        newId = quotaion.id
-        quotaion = Quotaion.query.filter(Quotaion.id == newId).delete()
+        newId = quotation.id
+        quotation = Quotation.query.filter(Quotation.id == newId).delete()
         db.session.commit()
 
-        quotaion = Quotaion.query.filter(Quotaion.id == newId).all()
-        self.assertEqual(len(quotaion), 0)
+        quotation = Quotation.query.filter(Quotation.id == newId).all()
+        self.assertEqual(len(quotation), 0)
 
 
 if __name__ == '__main__':
