@@ -101,6 +101,44 @@ def seeder():
     for invoice_item in invoice_items:
         print(invoice_item.count)
 
+    # -----Dust_Invoices-----
+    print('----Dust_Invoices-----')
+    dust_invoices = [
+        Dust_Invoice(customerId=1, customerName='○○株式会社',  applyDate=date(2022, 1, 1), deadLine=date(2022, 1, 1),
+                     title='削除した○○株式会社への請求書', memo='これは削除した請求書のメモです', remarks='これは削除した請求書の備考です', isTaxExp=True),
+        Dust_Invoice(customerId=2, customerName="○○有限会社",  applyDate=date(2022, 1, 1), deadLine=date(2022, 1, 1),
+                     title='削除した○○有限会社への請求書', memo='これは削除した請求書のメモです', remarks='これは削除した請求書の備考です', isTaxExp=True),
+        Dust_Invoice(customerId=3, customerName="○○商事",  applyDate=date(2022, 1, 1), deadLine=date(2022, 1, 1),
+                     title='削除した○○商事への請求書', memo='これは削除した請求書のメモです', remarks='これは削除した請求書の備考です', isTaxExp=True),
+    ]
+    db.session.add_all(dust_invoices)
+    db.session.commit()
+
+    dust_invoices = Dust_Invoice.query.all()
+    for dust_invoice in dust_invoices:
+        print(dust_invoice.title)
+
+    # -----Dust_Invoice_Items-----
+    print('----Dust_Invoice_Items----')
+    dust_invoice_items = [
+        Dust_Invoice_Item(invoiceId=1, itemId=1,
+                          itemName='りんご', price=100, cost=50, count=5),
+        Dust_Invoice_Item(invoiceId=1, itemId=2,
+                          itemName='鉛筆', price=20, cost=5, count=10),
+        Dust_Invoice_Item(invoiceId=2, itemId=2,
+                          itemName='鉛筆', price=30, cost=5, count=15),
+        Dust_Invoice_Item(invoiceId=2, itemId=3,
+                          itemName='ラジオ', price=1100, cost=300, count=2),
+        Dust_Invoice_Item(invoiceId=3, itemId=1,
+                          itemName='りんご', price=120, cost=50, count=30),
+    ]
+    db.session.add_all(dust_invoice_items)
+    db.session.commit()
+
+    dust_invoice_items = Dust_Invoice_Item.query.all()
+    for dust_invoice_item in dust_invoice_items:
+        print(dust_invoice_item.count)
+
     # -----Quotations-----
     print('----Quotations----')
     quotations = [
@@ -138,6 +176,44 @@ def seeder():
     quotation_items = Quotation_Item.query.all()
     for quotation_item in quotation_items:
         print(quotation_item.count)
+
+    # -----Dust_Quotations-----
+    print('----Dust_Quotations----')
+    dust_quotations = [
+        Dust_Quotation(customerId=1, customerName='○○株式会社', applyDate=date(2022, 1, 1), expiry=date(2022, 1, 1),
+                       title='削除した○○株式会社への見積書', memo='これは削除した見積書のメモです', remarks='これは削除した見積書の備考です', isTaxExp=True),
+        Dust_Quotation(customerId=2, customerName="○○有限会社", applyDate=date(2022, 1, 1), expiry=date(2022, 1, 1),
+                       title='削除した○○有限会社への見積書', memo='これは削除した見積書のメモです', remarks='これは削除した見積書の備考です', isTaxExp=True),
+        Dust_Quotation(customerId=3, customerName="○○商事", applyDate=date(2022, 1, 1), expiry=date(2022, 1, 1),
+                       title='削除した○○商事への見積書', memo='これは削除した見積書のメモです', remarks='これは削除した見積書の備考です', isTaxExp=True),
+    ]
+    db.session.add_all(dust_quotations)
+    db.session.commit()
+
+    dust_quotations = Dust_Quotation.query.all()
+    for dust_quotation in dust_quotations:
+        print(dust_quotation.title)
+
+    # -----Dust_Quotation_Items-----
+    print('----Dust_Quotation_Items----')
+    dust_quotation_items = [
+        Dust_Quotation_Item(id=1, quotationId=1, itemId=1,
+                            itemName='りんご', price=100, cost=50, count=5),
+        Dust_Quotation_Item(id=2, quotationId=1, itemId=2,
+                            itemName='鉛筆', price=20, cost=5, count=10),
+        Dust_Quotation_Item(id=3, quotationId=2, itemId=2,
+                            itemName='鉛筆', price=30, cost=5, count=15),
+        Dust_Quotation_Item(id=4, quotationId=2, itemId=3,
+                            itemName='ラジオ', price=1100, cost=300, count=2),
+        Dust_Quotation_Item(id=5, quotationId=3, itemId=1,
+                            itemName='りんご', price=120, cost=50, count=30),
+    ]
+    db.session.add_all(dust_quotation_items)
+    db.session.commit()
+
+    dust_quotation_items = Dust_Quotation_Item.query.all()
+    for dust_quotation_item in dust_quotation_items:
+        print(dust_quotation_item.count)
 
     # -----Memos-----
     print('----Memos----')

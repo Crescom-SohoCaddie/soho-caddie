@@ -146,6 +146,43 @@ class Invoice_Item(db.Model):
                           default=datetime.now, onupdate=datetime.now)
 
 
+class Dust_Invoice(db.Model):
+
+    __tablename__ = 'dust_invoices'
+
+    id = db.Column(db.Integer, primary_key=True)
+    customerId = db.Column(db.Integer, db.ForeignKey('customers.id'))
+    customerName = db.Column(db.String)
+    applyNumber = db.Column(db.Integer)
+    applyDate = db.Column(db.Date)
+    deadLine = db.Column(db.Date)
+    title = db.Column(db.String)
+    memo = db.Column(db.String)
+    remarks = db.Column(db.String)
+    isTaxExp = db.Column(db.Boolean, nullable=False, default=True)
+    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.DateTime, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
+    invoice_items = db.relationship(
+        'Dust_Invoice_Item', backref='dust_invoice', uselist=True, cascade='all, delete',)
+
+
+class Dust_Invoice_Item(db.Model):
+
+    __tablename__ = 'dust_invoice_items'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invoiceId = db.Column(db.Integer, db.ForeignKey('dust_invoices.id'))
+    itemId = db.Column(db.Integer, db.ForeignKey('items.id'))
+    itemName = db.Column(db.String)
+    price = db.Column(db.Integer)
+    cost = db.Column(db.Integer)
+    count = db.Column(db.Integer)
+    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.DateTime, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
+
+
 # 見積番号自動生成
 def edited_quotation_number():
 
@@ -193,6 +230,43 @@ class Quotation_Item(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     quotationId = db.Column(db.Integer, db.ForeignKey('quotations.id'))
+    itemId = db.Column(db.Integer, db.ForeignKey('items.id'))
+    itemName = db.Column(db.String)
+    price = db.Column(db.Integer)
+    cost = db.Column(db.Integer)
+    count = db.Column(db.Integer)
+    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.DateTime, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
+
+
+class Dust_Quotation(db.Model):
+
+    __tablename__ = 'dust_quotations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    customerId = db.Column(db.Integer, db.ForeignKey('customers.id'))
+    customerName = db.Column(db.String)
+    applyNumber = db.Column(db.Integer)
+    applyDate = db.Column(db.Date)
+    expiry = db.Column(db.Date)
+    title = db.Column(db.String)
+    memo = db.Column(db.String)
+    remarks = db.Column(db.String)
+    isTaxExp = db.Column(db.Boolean, nullable=False, default=True)
+    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.DateTime, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
+    quotation_items = db.relationship(
+        'Dust_Quotation_Item', backref='dust_quotation', uselist=True, cascade='all, delete',)
+
+
+class Dust_Quotation_Item(db.Model):
+
+    __tablename__ = 'dust_quotation_items'
+
+    id = db.Column(db.Integer, primary_key=True)
+    quotationId = db.Column(db.Integer, db.ForeignKey('dust_quotations.id'))
     itemId = db.Column(db.Integer, db.ForeignKey('items.id'))
     itemName = db.Column(db.String)
     price = db.Column(db.Integer)
@@ -284,6 +358,19 @@ class InvoiceSchema(ma.SQLAlchemyAutoSchema):
     invoice_items = ma.Nested(Invoice_ItemSchema, many=True)
 
 
+class Dust_Invoice_ItemSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Dust_Invoice_Item
+        include_fk = True
+
+
+class Dust_InvoiceSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Dust_Invoice
+        include_fk = True
+    dust_invoice_items = ma.Nested(Dust_Invoice_ItemSchema, many=True)
+
+
 class Quotation_ItemSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Quotation_Item
@@ -295,6 +382,19 @@ class QuotationSchema(ma.SQLAlchemyAutoSchema):
         model = Quotation
         include_fk = True
     quotation_items = ma.Nested(Quotation_ItemSchema, many=True)
+
+
+class Dust_Quotation_ItemSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Dust_Quotation_Item
+        include_fk = True
+
+
+class Dust_QuotationSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Dust_Quotation
+        include_fk = True
+    dust_quotation_items = ma.Nested(Dust_Quotation_ItemSchema, many=True)
 
 
 class MemoSchema(ma.SQLAlchemyAutoSchema):

@@ -83,6 +83,41 @@
 
 <br>
 
+## Dust_Invoices
+
+| 項目名       | 和名           | タイプ    |  備考                                                     | 
+| ----------- | -------------- | -------- |  -------------------------------------------------------- | 
+| id          | id             | integer  |                                                           | 
+| customerId  | 得意先ID       | integer  |  フォーリンキー。                                         | 
+| customerName| 得意先名       | string   |                                                          | 
+| applyNumber | 請求番号       | integer  |  作成時にインクリメント。他の請求書と被らないようにする。 | 
+| applyDate   | 日付           | datetime |  請求書作成日                                             | 
+| deadLine    | 支払期限       | datetime |                                                           | 
+| title       | 件名           | text     |                                                           | 
+| memo        | メモ           | text     |  アプリ利用者に見えるもの                                 | 
+| remarks     | 備考           | text     |  印刷時に表示されるもの                                   |
+| isTaxExp    | 内税・外税     | boolean   |  内税・外税のチェック                                      | 
+| createdAt   | 作成日時       | datetime  |                                                           | 
+| updatedAt   | 更新日時       | datetime  |                                                           | 
+
+<br>
+
+## Dust_Invoice_Items
+
+| 項目名      | 和名     | タイプ    |  備考                   | 
+| ---------- | -------- | -------- |  ---------------------- | 
+| id         | id       | integer  |                         | 
+| invoiceId  | 請求書ID | integer  |  請求書テーブルと紐づく | 
+| itemId     | 商品ID   | integer  |                         | 
+| itemName   | 商品名   | string   |                         | 
+| cost       | 原価     | integer  |                         |
+| price      | 値段     | integer  |                         |
+| count      | 個数     | integer  |                         | 
+| createdAt  | 作成日時 | datetime |                         | 
+| updatedAt  | 更新日時 | datetime |                         | 
+
+<br>
+
 ## Quotations
 
 | 項目名       | 和名           | タイプ    |  備考                                                     | 
@@ -112,6 +147,41 @@
 | itemName    | 商品名   | string   |  紐づいたものor入力 両対応できるように |
 | price       | 値段     | integer  |  Itemsテーブルを参照可能             |
 | cost        | 原価     | integer  |  Itemsテーブルを参照可能             |
+| count       | 個数     | integer  |                         | 
+| createdAt   | 作成日時 | datetime |                         | 
+| updatedAt   | 更新日時 | datetime |                         | 
+
+<br>
+
+## Dust_Quotations
+
+| 項目名       | 和名           | タイプ    |  備考                                                     | 
+| ----------- | -------------- | -------- | -------------------------------------------------------- | 
+| id          | id             | integer  |                                                          | 
+| customerId  | 得意先ID       | integer  | フォーリンキー。                                         | 
+| customerName| 得意先名       | string   |                                                         | 
+| applyNumber | 見積番号       | integer  | 作成時にインクリメント。他の見積書と被らないようにする。 | 
+| applyDate   | 日付           | datetime | 見積書作成日                                             | 
+| expiry      | 見積書有効期限  | datetime |                                                          | 
+| title       | 件名           | text     |                                                          | 
+| memo        | メモ           | text     | アプリ利用者に見えるもの                                 | 
+| remarks     | 備考           | text     | 印刷時に表示されるもの                                   | 
+| isTaxExp    | 内税・外税      | boolean  | 内税・外税のチェック                                     | 
+| createdAt   | 作成日時       | datetime |                                                          | 
+| updatedAt   | 更新日時       | datetime |                                                          | 
+
+<br>
+
+## Dust_Quotation_Items
+
+| 項目名       | 和名     | タイプ    |  備考                   | 
+| ----------  | -------- | -------- |  ---------------------- | 
+| id          | id       | integer  |                         | 
+| quotationId | 見積書ID | integer  |  見積書テーブルと紐づく   | 
+| itemId      | 商品ID   | integer  |                         | 
+| itemName    | 商品名   | string   |                         |
+| price       | 値段     | integer  |                         |
+| cost        | 原価     | integer  |                         |
 | count       | 個数     | integer  |                         | 
 | createdAt   | 作成日時 | datetime |                         | 
 | updatedAt   | 更新日時 | datetime |                         | 
