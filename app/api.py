@@ -5,10 +5,6 @@ import json
 from datetime import date
 
 
-#@app.route('/')
-#def index():
-#    return 'HelloWorld!'
-
 
 # -----ユーザー(Users)-----
 @app.route('/users', methods=['GET'])
@@ -219,19 +215,20 @@ def invoice_show(id):
 @app.route('/invoice', methods=['POST'])
 def invoice_create():
     data = request.json
+    newInvoiceItems = []
 
     if data.get('invoice_items'):
-        newInvoiceItems = [
-            Invoice_Item(
-                invoiceId=item.get('invoiceId'),
-                itemId=item.get('itemId'),
-                price=item.get('price'),
-                count=item.get('count'),
-                unit=item.get('unit'),
-                itemName=item.get('itemName'),
-            )
-            for item in data.get('invoice_items')
-        ]
+        for item in data.get('invoice_items'):
+            existItems = {k: v for k, v in item.items() if v is not None}
+            if any(existItems):
+                newInvoiceItems.append(Invoice_Item(
+                    invoiceId=existItems.get('invoiceId'),
+                    itemId=existItems.get('itemId'),
+                    price=existItems.get('price'),
+                    count=existItems.get('count'),
+                    unit=existItems.get('unit'),
+                    itemName=existItems.get('itemName'),
+                ))
     else:
         newInvoiceItems = []
 
@@ -396,19 +393,20 @@ def quotation_show(id):
 @app.route('/quotation', methods=['POST'])
 def quotation_create():
     data = request.json
+    newQuotationItems = []
 
     if data.get('quotation_items'):
-        newQuotationItems = [
-            Quotation_Item(
-                quotationId=item.get('quotationId'),
-                itemId=item.get('itemId'),
-                price=item.get('price'),
-                count=item.get('count'),
-                unit=item.get('unit'),
-                itemName=item.get('itemName'),
-            )
-            for item in data.get('quotation_items')
-        ]
+        for item in data.get('quotation_items'):
+            existItems = {k: v for k, v in item.items() if v is not None}
+            if any(existItems):
+                newQuotationItems.append(Quotation_Item(
+                    quotationId=existItems.get('quotationId'),
+                    itemId=existItems.get('itemId'),
+                    price=existItems.get('price'),
+                    count=existItems.get('count'),
+                    unit=existItems.get('unit'),
+                    itemName=existItems.get('itemName'),
+                ))
     else:
         newQuotationItems = []
 
