@@ -98,7 +98,7 @@
                         <b-card border-variant="white" class="mb-3 text-center" header="カテゴリ一覧"
                             header-border-variant="light">
                             <b-table responsive hover small id="categorytable" sort-by="ID" small label="Table Options"
-                                :items=categories :fields="[
+                                :items=getItems :fields="[
                           {  key: 'update', label: '' },
                           {  key: 'id', label: 'No.' },
                           {  key: 'categoryName', label: 'カテゴリ名' },
@@ -118,6 +118,12 @@
                                 </template>
                             </b-table>
                         </b-card>
+                        <vuejs-paginate v-model="currentPage" :page-count="getPageCount" :prev-text="'<'" :next-text="'>'"
+                            :click-handler="clickCallback" :container-class="'pagination justify-content-center'"
+                            :page-class="'page-item'" :page-link-class="'page-link'" :prev-class="'page-item'"
+                            :prev-link-class="'page-link'" :next-class="'page-item'" :next-link-class="'page-link'"
+                            :first-last-button="true" :first-button-text="'<<'" :last-button-text="'>>'">
+                        </vuejs-paginate>
                     </b-col>
                     <b-col></b-col>
                 </b-row>
@@ -182,11 +188,15 @@
             const router = new VueRouter({
             })
 
+            Vue.component('vuejs-paginate', VuejsPaginate)
+
             var app = new Vue({
                 el: '#app',
                 data: {
                     categories: [],               //全件category
                     category: [],                //選択中のcategory
+                    parPage: 20,                    //１ページ内の表示件数
+                    currentPage: 1,                 //現在のページ
                 },
                 methods: {
                     // ---Categories---
@@ -239,11 +249,13 @@
                         });
                         self.category = self.categories.slice(-1)[0];
                         localStorage.setItem('category', JSON.stringify(self.category))
+                        // localStorage.setItem('currentPage', this.currentPage);
                     },
                     selectCategory: function (item) {
                         this.category = item;
                         console.log(this.category);
                         localStorage.setItem('category', JSON.stringify(item))
+                        // localStorage.setItem('currentPage', this.currentPage);
                     },
                     getCategory: async function (item) {
                         self = this;
@@ -277,10 +289,14 @@
                             this.bulkUpsert(this.category);
                         }
                     },
+                    clickCallback: function (pageNum) {
+                        this.currentPage = Number(pageNum);
+                    }
                 },
                 mounted: function () {
                     document.querySelector('title').textContent = 'カテゴリ管理';
                     this.category = JSON.parse(localStorage.getItem('category'));
+                    // this.currentPage = localStorage.getItem('currentPage');
                     this.getCategories();
                 },
                 router,
@@ -293,6 +309,14 @@
                         //return this.$route.query.mode;
                         return localStorage.getItem('wMode');
                     },
+                    getItems: function () {
+                        let current = this.currentPage * this.parPage;
+                        let start = current - this.parPage;
+                        return this.categories.slice(start, current);
+                    },
+                    getPageCount: function () {
+                        return Math.ceil(this.categories.length / this.parPage);
+                    }
                 }
             })
 
