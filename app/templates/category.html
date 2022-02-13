@@ -118,11 +118,12 @@
                                 </template>
                             </b-table>
                         </b-card>
-                        <vuejs-paginate v-model="currentPage" :page-count="getPageCount" :prev-text="'<'" :next-text="'>'"
-                            :click-handler="clickCallback" :container-class="'pagination justify-content-center'"
-                            :page-class="'page-item'" :page-link-class="'page-link'" :prev-class="'page-item'"
-                            :prev-link-class="'page-link'" :next-class="'page-item'" :next-link-class="'page-link'"
-                            :first-last-button="true" :first-button-text="'<<'" :last-button-text="'>>'">
+                        <vuejs-paginate v-model="currentPage" :page-count="getPageCount" :prev-text="'<'"
+                            :next-text="'>'" :click-handler="clickCallback"
+                            :container-class="'pagination justify-content-center'" :page-class="'page-item'"
+                            :page-link-class="'page-link'" :prev-class="'page-item'" :prev-link-class="'page-link'"
+                            :next-class="'page-item'" :next-link-class="'page-link'" :first-last-button="true"
+                            :first-button-text="'<<'" :last-button-text="'>>'">
                         </vuejs-paginate>
                     </b-col>
                     <b-col></b-col>
