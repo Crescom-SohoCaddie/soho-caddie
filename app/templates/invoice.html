@@ -26,11 +26,6 @@
 
             #others-pdfout-sidebar {
                 max-height: 20%;
-                margin: 300px 0 0 0;
-            }
-
-            .hoge {
-                margin: 300px 0 0 0;
             }
 
             /* スピンボタン無効化 */
@@ -508,8 +503,7 @@
             <div class="fixed-bottom" v-if="pageName=='show' || pageName=='store'">
                 <b-row class="mb-3">
                     <b-col class="text-right">
-                        <b-button variant="info" class="others-pdfout-button" v-b-toggle.others-pdfout-sidebar
-                            @click="">
+                        <b-button variant="info" class="others-pdfout-button" v-b-toggle.others-pdfout-sidebar>
                             .　.　.
                         </b-button>
                     </b-col>
@@ -540,10 +534,9 @@
             <template>
                 <div>
                     <b-sidebar id="others-pdfout-sidebar" right>
-                        <div class="hoge"></div>
                         <div class="px-3 py-2">
-                            <b-button></b-button>
-                            <b-button></b-button>
+                            <b-button>ああああ</b-button>
+                            <b-button>ああああ</b-button>
                         </div>
                     </b-sidebar>
                 </div>
@@ -927,12 +920,6 @@
                     itemsCurrentPageRows() {
                         return this.items.length;
                     },
-                    hogehoge() {
-                        setTimeout(() => {
-                            $('#others-pdfout-sidebar').style.margin = "200px 0 0 0";
-                        },
-                            1000)
-                    }
                 },
             })
 
