@@ -20,6 +20,19 @@
                 max-width: 100px;
             }
 
+            .others-pdfout-button {
+                border-radius: 10px 0 0 10px;
+            }
+
+            #others-pdfout-sidebar {
+                max-height: 20%;
+                margin: 300px 0 0 0;
+            }
+
+            .hoge {
+                margin: 300px 0 0 0;
+            }
+
             /* スピンボタン無効化 */
             /* Chrome/Safari */
             input[type="number"]::-webkit-outer-spin-button,
@@ -256,11 +269,12 @@
                                     </b-form-group>
                                     <b-row>
                                         <b-col sm>
-                                            <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="アップロード"
-                                                label-for="upform">
+                                            <b-form-group label-cols="4" label-cols-lg="2" label-size="sm"
+                                                label="アップロード" label-for="upform">
                                                 <b-form @change="uploadFile" id="upform">
                                                     <b-form-file v-model="form.file" browse-text="+"
-                                                        placeholder="クリックまたはドラッグ..." drop-placeholder="Drop file here...">
+                                                        placeholder="クリックまたはドラッグ..."
+                                                        drop-placeholder="Drop file here...">
                                                     </b-form-file>
                                                 </b-form>
                                             </b-form-group>
@@ -271,9 +285,11 @@
                                             <b-button @click="deleteFiles(invoice.applyNumber)" class="mr-2 mb-3"><i
                                                     class="fas fa-trash-alt"></i>
                                             </b-button>
-                                            <b-button v-if="uploadListMode=='list'" @click="uploadListMode='card'" class="mr-2">
+                                            <b-button v-if="uploadListMode=='list'" @click="uploadListMode='card'"
+                                                class="mr-2">
                                                 card</b-button>
-                                            <b-button v-if="uploadListMode=='card'" @click="uploadListMode='list'" class="mr-2">
+                                            <b-button v-if="uploadListMode=='card'" @click="uploadListMode='list'"
+                                                class="mr-2">
                                                 list</b-button>
                                         </b-col>
                                         <b-col>
@@ -299,7 +315,8 @@
                                                     <template v-for="f in dicFiles">
                                                         <b-card border-variant="light">
                                                             <b-img :src="'../'+f.thumbPath" width="90" fluid></b-img>
-                                                            <input type="checkbox" v-model="f.isSelect" class="image-in-check">
+                                                            <input type="checkbox" v-model="f.isSelect"
+                                                                class="image-in-check">
                                                         </b-card>
                                                         <!--
                                                                 <b-card style="width: 5rem;" 
@@ -314,7 +331,7 @@
                                             </template>
                                         </b-col>
                                     </b-row>
-        
+
 
 
                                 </b-col>
@@ -486,25 +503,49 @@
             <b-row class="mb-5"></b-row>
 
             <!-- 更新・取消ボタンのフッター -->
-            <b-card v-if="pageName=='show' || pageName=='store'" bg-variant="dark" text-variant="white"
-                class="fixed-bottom footer">
-                <b-row>
-                    <b-col>
-                        <router-link to="?page=index">
-                            <b-button @click="getInvoices();">＜</b-button>
-                        </router-link>
-                    </b-col>
+            <div class="fixed-bottom" v-if="pageName=='show' || pageName=='store'">
+                <b-row class="mb-3">
                     <b-col class="text-right">
-                        <b-button pill variant="info" @click="modalShow(invoice,'upsertModal');" id="showUpsertModal">適用
-                        </b-button>
-                        <b-button pill size="lg" variant="info" @click="pdfout" id="pdfout"><i class="fas fa-print"></i>
-                        </b-button>
-                        <b-button pill size="lg" variant="danger" @click="modalShow(invoice,'deleteModal');">
-                            <i class="fas fa-trash-alt"></i>
+                        <b-button variant="info" class="others-pdfout-button" v-b-toggle.others-pdfout-sidebar
+                            @click="">
+                            .　.　.
                         </b-button>
                     </b-col>
                 </b-row>
-            </b-card>
+                <b-card bg-variant="dark" text-variant="white">
+                    <b-row>
+                        <b-col>
+                            <router-link to="?page=index">
+                                <b-button @click="getInvoices();">＜</b-button>
+                            </router-link>
+                        </b-col>
+                        <b-col class="text-right">
+                            <b-button pill variant="info" @click="modalShow(invoice,'upsertModal');"
+                                id="showUpsertModal">適用
+                            </b-button>
+                            <b-button pill size="lg" variant="info" @click="pdfout" id="pdfout"><i
+                                    class="fas fa-print"></i>
+                            </b-button>
+                            <b-button pill size="lg" variant="danger" @click="modalShow(invoice,'deleteModal');">
+                                <i class="fas fa-trash-alt"></i>
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </b-card>
+            </div>
+
+            <!-- 納品・領収書印刷ボタンサイドバー -->
+            <template>
+                <div>
+                    <b-sidebar id="others-pdfout-sidebar" right>
+                        <div class="hoge"></div>
+                        <div class="px-3 py-2">
+                            <b-button></b-button>
+                            <b-button></b-button>
+                        </div>
+                    </b-sidebar>
+                </div>
+            </template>
 
             <!-- 保存モーダル -->
             <div>
@@ -771,16 +812,16 @@
                         await axios.post("/pdfmaker", pdfData)
                             .then(function (response) {
                                 printJS('/pdf/' + response.data)
-/*
-                                if (self.modeName == 'mw') {
-                                    window.parent.postMessage({
-                                        action: 'pdfOut',
-                                        message: response.data
-                                    }, "*");
-                                } else {
-                                    window.open('/pdf/' + response.data)
-                                }
-*/
+                                /*
+                                                                if (self.modeName == 'mw') {
+                                                                    window.parent.postMessage({
+                                                                        action: 'pdfOut',
+                                                                        message: response.data
+                                                                    }, "*");
+                                                                } else {
+                                                                    window.open('/pdf/' + response.data)
+                                                                }
+                                */
                             });
                     },
                     formatDate(date) {
@@ -884,6 +925,12 @@
                     itemsCurrentPageRows() {
                         return this.items.length;
                     },
+                    hogehoge() {
+                        setTimeout(() => {
+                            $('#others-pdfout-sidebar').style.margin = "200px 0 0 0";
+                        },
+                            1000)
+                    }
                 },
             })
 
