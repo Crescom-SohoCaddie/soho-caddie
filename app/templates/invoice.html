@@ -26,6 +26,7 @@
 
             #others-pdfout-sidebar {
                 max-height: 20%;
+                width: 200px;
             }
 
             /* スピンボタン無効化 */
@@ -535,8 +536,16 @@
                 <div>
                     <b-sidebar id="others-pdfout-sidebar" right>
                         <div class="px-3 py-2">
-                            <b-button>ああああ</b-button>
-                            <b-button>ああああ</b-button>
+                            <b-row class="mb-3">
+                                <b-col class="text-center">
+                                    <b-button>納品書印刷</b-button>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col class="text-center">
+                                    <b-button>領収書印刷</b-button>
+                                </b-col>
+                            </b-row>
                         </div>
                     </b-sidebar>
                 </div>
