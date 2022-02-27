@@ -698,9 +698,8 @@
                                 for (const [key, value] of Object.entries(response.data)) {
                                     console.log(key, value);
                                     self.$set(self.invoice, key, value);
-                                    localStorage.setItem('invoice', JSON.stringify(self.invoice));
-
                                 }
+                                localStorage.setItem('invoice', JSON.stringify(self.invoice));
                             });
                     },
                     deleteInvoiceItem: async function (item) {
