@@ -626,7 +626,7 @@
                                 Vue.set(self.invoice, 'id', response.data.id)
                                 self.invoice.isInsert = false;
                                 self.getInvoice(self.invoice);
-                                localStorage.setItem('invoice', JSON.stringify(self.invoice));
+                                //localStorage.setItem('invoice', JSON.stringify(self.invoice));
                                 app.title = '新規作成';
                                 app.message = '保存しました。';
                             });
@@ -698,6 +698,8 @@
                                 for (const [key, value] of Object.entries(response.data)) {
                                     console.log(key, value);
                                     self.$set(self.invoice, key, value);
+                                    localStorage.setItem('invoice', JSON.stringify(self.invoice));
+
                                 }
                             });
                     },
