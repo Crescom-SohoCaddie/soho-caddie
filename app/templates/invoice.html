@@ -335,6 +335,78 @@
                           {  key: 'isDelete', label: '削除',class:'text-center' },
                         ]">
 
+                            <template #custom-foot="data">
+                                <!-- 備考と合計エリア-->
+                                <td colspan="6">
+                                    <b-row>
+                                        <b-col md order="2" order-sm="2" order-md="1">
+                                            <b-row class="mb-3">
+                                                <b-col cols="auto">
+                                                    <b-form-checkbox class="mr-3" v-model="invoice.isPaid">入金済み
+                                                    </b-form-checkbox>
+                                                </b-col>
+                                                <b-col>
+                                                    <b-form-input v-model="invoice.paymentDate" id="paymentDate"
+                                                        size="sm" type="date" style="width: 150px;">
+                                                    </b-form-input>
+                                                </b-col>
+                                            </b-row>
+                                            <b-form-textarea v-model="invoice.remarks" id="remarks" size="sm"
+                                                type="text" rows="4" placeholder="備考欄">
+                                            </b-form-textarea>
+                                        </b-col>
+                                        <b-col md order="1" order-sm="1" order-md="2">
+                                            <b-container style="max-width: 300px; margin-right: 0; padding-right: 0;">
+                                                <b-row>
+                                                    <b-col class="text-right ">
+                                                        <b-form-checkbox v-model="invoice.isTaxExp" class="ml-3">外税
+                                                        </b-form-checkbox>    
+                                                    </b-col>
+                                                    <b-col>
+                                                        <b-input-group append="%" size="sm">
+                                                            <b-form-input v-model="invoice.tax" id="tax" size="sm">
+                                                            </b-form-input>
+                                                        </b-input-group>        
+                                                    </b-col>
+                                                </b-row>
+
+                                                <b-table-simple borderless class="mt-2">
+                                                    <b-tr>
+                                                        <b-td class="text-right" style="width: 100px;">小計</b-td>
+                                                        <b-td class="text-center" id="tdAmount"
+                                                            style="border-bottom: 2px solid white;">
+                                                            {{sum|nf}}
+                                                        </b-td>
+                                                    </b-tr>
+                                                    <b-tr>
+                                                        <b-td class="text-right">消費税</b-td>
+                                                        <b-td class="text-center" id="tdAmount"
+                                                            style="border-bottom: 2px solid white;">
+                                                            {{taxAmount|nf}}</b-td>
+                                                    </b-tr>
+                                                    <b-tr>
+                                                        <b-td class="text-right">請求総額</b-td>
+                                                        <b-td class="text-center" id="tdAmount">{{priceIncludingTax|nf}}
+                                                        </b-td>
+                                                    </b-tr>
+                                                </b-table-simple>
+                                            </b-container>
+
+                                        </b-col>
+                                    </b-row>
+                                </td>
+                                <!-- 税と＋ボタンエリア-->
+                                <td colspan="2" class="align-top">
+                                    <!-- 商品項目を追加するプラスボタン -->
+                                    <div block class="text-right">
+                                        <b-button pill variant="primary" @click="addRowInvoiceItem();">✙</b-button>
+                                    </div>
+
+
+                                </td>
+                            </template>
+
+
                             <template v-slot:cell(any)="data">
                                 <b-form-input v-model="data.item.any" size="sm" autocomplete="off"></b-form-input>
                             </template>
@@ -451,66 +523,6 @@
 
                         </b-table>
 
-                        <!-- 商品項目を追加するプラスボタン -->
-                        <b-row class="d-flex justify-content-end" id="item_add">
-                            <b-col cols="16" md="auto">
-                                <b-button pill variant="primary" @click="addRowInvoiceItem();">✙</b-button>
-                            </b-col>
-                        </b-row>
-
-                        <div class="mt-5"></div>
-
-                        <b-row class="mb-3">
-                            <b-col cols="auto">
-                                <b-form-checkbox class="mr-3" v-model="invoice.isPaid">入金済み</b-form-checkbox>
-                            </b-col>
-                            <b-col>
-                                <b-form-input v-model="invoice.paymentDate" id="paymentDate" size="sm" type="date"
-                                    style="width: 150px;">
-                                </b-form-input>
-                            </b-col>
-                        </b-row>
-
-                        <b-row>
-                            <b-col md>
-                                <b-form-textarea v-model="invoice.remarks" id="remarks" size="sm" type="text" rows="6"
-                                    placeholder="備考欄">
-                                </b-form-textarea>
-                            </b-col>
-                            <b-col md>
-                                <b-container style="max-width: 500px; margin-right: 0;">
-                                    <b-table-simple borderless>
-                                        <b-tr>
-                                            <b-td class="text-right" style="width: 100px;">小計</b-td>
-                                            <b-td class="text-center" id="tdAmount"
-                                                style="border-bottom: 2px solid white;">
-                                                {{sum|nf}}
-                                            </b-td>
-                                            <b-td style="width: 100px;">
-                                                <b-form-checkbox v-model="invoice.isTaxExp" class="ml-3">外税
-                                                </b-form-checkbox>
-                                            </b-td>
-                                        </b-tr>
-                                        <b-tr>
-                                            <b-td class="text-right">消費税</b-td>
-                                            <b-td class="text-center" id="tdAmount"
-                                                style="border-bottom: 2px solid white;">
-                                                {{taxAmount|nf}}</b-td>
-                                            <b-td style="padding: 8px;">
-                                                <b-input-group append="%" size="sm">
-                                                    <b-form-input v-model="invoice.tax" id="tax" size="sm">
-                                                    </b-form-input>
-                                                </b-input-group>
-                                            </b-td>
-                                        </b-tr>
-                                        <b-tr>
-                                            <b-td class="text-right">請求総額</b-td>
-                                            <b-td class="text-center" id="tdAmount">{{priceIncludingTax|nf}}</b-td>
-                                        </b-tr>
-                                    </b-table-simple>
-                                </b-container>
-                            </b-col>
-                        </b-row>
                         <!-- アップロード機能　-->
                         <b-row>
                             <b-col md="3">
