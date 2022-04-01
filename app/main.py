@@ -14,7 +14,7 @@ import csv
 
 # sys.path.append('../')
 import pdfmaker.app.pdf_maker as pd
-from upload.upload import make_thumb, chext, save_file, remove_files2, get_flist,get_dir_info
+from upload.upload import make_thumb, chext, save_file, remove_files2, get_flist, get_dir_info
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # ------　ユーザー認証 -------
@@ -46,19 +46,20 @@ def get_login():
     return render_template('login.html')
 
 
-def checkPassword(user_id,password):
+def checkPassword(user_id, password):
     user = User.query.filter_by(name=user_id).first()
     if user:
         if user.password == password:
             return True
         pw_hash = user.password
-        return check_password_hash(pw_hash,password)
+        return check_password_hash(pw_hash, password)
+
 
 @app.route('/login', methods=['POST'])
 def login_post():
     user_id = request.form["userId"]
     password = request.form["password"]
-    if checkPassword(user_id,password):
+    if checkPassword(user_id, password):
         user = LoginUser(user_id)
         login_user(user)
         newHistory = History(
@@ -153,6 +154,11 @@ def homePage():
 @app.route('/check-page')
 def checkPage():
     return render_template('check.html')
+
+
+@app.route('/undeposited-page')
+def upDepositedPage():
+    return render_template('undeposited.html')
 
 
 @app.route('/invoice-page')
@@ -346,12 +352,13 @@ def get_files_list(base, dir_path):
     # return f" {fid} / {up_base_dir}{dir_path}"
     return jsonify(get_flist(check_base_dir(base), dir_path))
 
+
 @app.route("/count-files/<base>/<path:dir_path>", methods=['GET'])
 def get_files_count(base, dir_path):
-    d_dict={}
-    for d in get_dir_info(check_base_dir(base),dir_path):
+    d_dict = {}
+    for d in get_dir_info(check_base_dir(base), dir_path):
         d_dict[d['key']] = d['count_files']
-    #print (d_dict)    
+    #print (d_dict)
     return jsonify(d_dict)
 
 
