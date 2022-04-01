@@ -488,6 +488,55 @@ def dust_invoice_index_v1():
     return jsonify(InvoiceSchema(many=True).dump(invoices))
 
 
+@app.route('/v1/undeposited-invoices', methods=['GET'])
+@app.route('/undeposited-invoices', methods=['GET'])
+def undeposited_invoice_index_v1():
+    # パラメータを準備
+    req = request.args
+    searchWord = req.get('search')
+    limit = int(req.get('limit')) if req.get('limit') else _LIMIT_NUM
+    offset = int(req.get('offset')) if req.get('offset') else 0
+    # 各種フィルタリング処理
+    if searchWord:
+        if len(searchWord) == 4:
+            invoices = Invoice.query.filter(and_(Invoice.isDelete == False, Invoice.isPaid == False, or_(
+                extract('year', Invoice.applyDate) == searchWord, Invoice.customerName.like('%'+searchWord+'%'))))
+        elif len(searchWord) == 6:
+            year = searchWord[:4]
+            month = searchWord[4:]
+            invoices = Invoice.query.filter(and_(Invoice.isDelete == False, Invoice.isPaid == False, or_(
+                Invoice.customerName.like('%'+searchWord+'%'), and_(
+                    extract('year', Invoice.applyDate) == year, extract('month', Invoice.applyDate) == month))))
+        elif len(searchWord) == 8:
+            year = searchWord[:4]
+            month = searchWord[4:6]
+            day = searchWord[6:]
+            invoices = Invoice.query.filter(and_(Invoice.isDelete == False, Invoice.isPaid == False, or_(
+                Invoice.customerName.like('%'+searchWord+'%'), and_(
+                    extract('year', Invoice.applyDate) == year, extract('month', Invoice.applyDate) == month, extract('day', Invoice.applyDate) == day))))
+        else:
+            invoices = Invoice.query.filter(
+                and_(Invoice.isDelete == False, Invoice.isPaid == False, Invoice.customerName.like('%'+searchWord+'%')))
+    else:
+        invoices = Invoice.query.filter(
+            Invoice.isDelete == False, Invoice.isPaid == False)
+    if offset:
+        invoices = invoices.offset(offset)
+    if limit:
+        invoices = invoices.limit(limit)
+
+    newHistory = History(
+        userName=current_user.id,
+        modelName='Invoice(undeposited)',
+        modelId='',
+        action='gets'
+    )
+    db.session.add(newHistory)
+    db.session.commit()
+
+    return jsonify(InvoiceSchema(many=True).dump(invoices))
+
+
 @app.route('/v1/invoice/<id>', methods=['GET'])
 @app.route('/invoice/<id>', methods=['GET'])
 def invoice_show(id):

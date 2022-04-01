@@ -14,6 +14,11 @@
                 font-size: 18px;
             }
 
+            #searchDay {
+                display: flex;
+                justify-content: right;
+            }
+
             #invoicetable td,
             #invoice_items_table td {
                 vertical-align: middle;
@@ -133,10 +138,10 @@
                 <b-row class="mt-1">
                     <b-col></b-col>
                     <b-col cols="11">
-                        <b-card border-variant="white" class="mb-3 text-center" header="請求書一覧"
+                        <b-card border-variant="white" class="mb-3 text-center" header="未入金一覧"
                             header-border-variant="light">
                             <b-row>
-                                <b-col sm>
+                                <b-col sm="4">
                                     <b-input-group>
                                         <b-form-input v-model="searchInvoiceWord" id="searchInvoiceWord" size="sm"
                                             placeholder="🔍　日付 or 顧客名">
@@ -147,12 +152,21 @@
                                         </b-input-group-append>
                                     </b-input-group>
                                 </b-col>
-                                <b-col sm>
+                                <b-col sm="2">
                                 </b-col>
                                 <b-col sm>
-                                    <b-row align-h="end">
-                                        <b-form-checkbox class="mr-3" v-model="isInvoicesShowAll">全て表示</b-form-checkbox>
-                                    </b-row>
+                                    <div id="searchDay">
+                                        <b-form inline>
+                                            <label>日付</label>
+                                            <b-form-input v-model="searchDayStart" id="searchDayStart" size="sm"
+                                                class="mr-2 ml-2" autocomplete="off" type="date">
+                                            </b-form-input>
+                                            ～
+                                            <b-form-input v-model="searchDayEnd" id="searchDayEnd" size="sm"
+                                                class="ml-2" autocomplete="off" type="date">
+                                            </b-form-input>
+                                        </b-form>
+                                    </div>
                                 </b-col>
                             </b-row>
                             <b-row align-h="end">
@@ -672,7 +686,8 @@
                 el: '#app',
                 data: {
                     searchInvoiceWord: '',          //請求書検索
-                    isInvoicesShowAll: false,               //請求書検索
+                    searchDayStart: '',             //請求書検索
+                    searchDayEnd: '',               //請求書検索
                     invoicesIndicateCount: 0,       //請求書検索
                     invoicesIndicateAmount: 0,      //一覧表示中請求書の合計金額
                     searchItemWord: '',             //商品選択モーダル検索
@@ -709,7 +724,7 @@
                     // ---Invoices---
                     getInvoices: async function (searchWord = '', offset = 0) {
                         self = this;
-                        url = '/v1/invoices'
+                        url = '/v1/undeposited-invoices'
                         await axios.get(url, {
                             params: {
                                 search: searchWord,
@@ -1097,6 +1112,7 @@
                         }
                         if (!isUpdate || (isUpdate && this.invoice.customerId)) {
                             this.clearFileList();
+                            this.getInvoices(this.searchInvoiceWord);
                             router.push({ path: "?page=index" });
                         }
                     },
@@ -1131,7 +1147,7 @@
                     this.getMakers();
                     this.getSetting();
                     this.coutFiles();
-                    document.querySelector('title').textContent = '請求書管理';
+                    document.querySelector('title').textContent = '未入金チェック';
                     if (this.pageName == 'show') {
                         //this.getFileList(self.invoice.applyNumber);
                         this.getFileListDZ();
@@ -1186,8 +1202,15 @@
                     invoicesIndicateIndex: function () {
                         let invoices = this.invoices;
                         let amount = 0;
-                        if (this.isInvoicesShowAll === false)
-                            invoices = invoices.filter(invoice => invoice.isPaid === false);
+                        if (this.searchDayStart != '' && this.searchDayEnd == '') {
+                            invoices = invoices.filter(invoice => invoice.applyDate >= this.searchDayStart);
+                        }
+                        if (this.searchDayStart == '' && this.searchDayEnd != '') {
+                            invoices = invoices.filter(invoice => invoice.applyDate <= this.searchDayEnd);
+                        }
+                        if (this.searchDayStart != '' && this.searchDayEnd != '') {
+                            invoices = invoices.filter(invoice => invoice.applyDate >= this.searchDayStart && invoice.applyDate <= this.searchDayEnd);
+                        }
                         let invoiceAmounts = invoices.map(
                             invoice => invoice.invoice_items.map(
                                 item => Math.round(item.count * Math.round(item.price) * (invoice.isTaxExp == true ? (1 + invoice.tax / 100) : 1))).reduce((a, b) => a + b));
