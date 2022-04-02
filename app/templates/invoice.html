@@ -1067,6 +1067,9 @@
                         closeMethods: ['overlay', 'button', 'escape'],
                         closeLabel: "Close",
                     });
+                    let url = new URL(window.location.href);
+                    let params = url.searchParams;
+                    console.log(params.get('proc')); // 5
                 },
                 updated: function () {
                     self = this;
