@@ -118,9 +118,9 @@
 
                 <!-- 一覧 -->
                 <invoice-list :search-invoice-word="searchInvoiceWord" :select-invoice="selectInvoice"
-                    :search-invoice="searchInvoice" :is-invoices-show-all="isInvoicesShowAll"
-                    :invoices-indicate-count="invoicesIndicateCount" :invoices-indicate-index="invoicesIndicateIndex"
-                    :row-class="rowClass" :counted-files="countedFiles">
+                    :search-invoice="searchInvoice" :invoices-indicate-count="invoicesIndicateCount"
+                    :invoices-indicate-index="invoicesIndicateIndex" :row-class="rowClass" :counted-files="countedFiles"
+                    @emit-event="updateIsInvoicesShowAll">
                 </invoice-list>
             </div>
 
@@ -1043,7 +1043,11 @@
                         interval = row > 1 ? 0 : 5;
                         return "height: " + (26 * row + interval) + "px";
                     },
-
+                    // ----- 子コンポーネントからの値 -----
+                    updateIsInvoicesShowAll(emitValue) {
+                        console.log(emitValue);
+                        this.isInvoicesShowAll = emitValue;
+                    },
                 },
                 mounted: function () {
                     this.invoice = JSON.parse(localStorage.getItem('invoice'));

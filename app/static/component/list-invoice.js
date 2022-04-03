@@ -23,7 +23,7 @@ Vue.component('invoice-list', {
                         </b-col>
                         <b-col sm>
                             <b-row align-h="end">
-                                <b-form-checkbox class="mr-3" v-model="isInvoicesShowAll">全て表示</b-form-checkbox>
+                                <b-form-checkbox class="mr-3" @change="changeIsInvoicesShowAll" v-model="isInvoicesShowAll">全て表示</b-form-checkbox>
                             </b-row>
                         </b-col>
                     </b-row>
@@ -66,6 +66,9 @@ Vue.component('invoice-list', {
         </b-row>
     </div>
     `,
+    // data: {
+    //     parentIsInvoicesShowAll: false,
+    // },
     props: {
         selectInvoice: Function,
         searchInvoice: Function,
@@ -88,6 +91,9 @@ Vue.component('invoice-list', {
             if (invoice.isTaxExp === true) return Math.round(amount * (1 + invoice.tax / 100));
             return amount;
         },
+        changeIsInvoicesShowAll() {
+            this.$emit('emit-event', this.isInvoicesShowAll);
+        }
     },
 })
 
