@@ -90,7 +90,7 @@ Vue.component('invoice-list', {
             return amount;
         },
         changeIsInvoicesShowAll() {
-            this.$emit('emit-event', this.isInvoicesShowAll);
+            this.$emit('emit-event-is-invoices-show-all', this.isInvoicesShowAll);
         }
     },
 })
@@ -119,9 +119,20 @@ Vue.component('invoice-list-payment', {
                         <b-col sm>
                         </b-col>
                         <b-col sm>
-                            <b-row align-h="end">
-                                <p>ここに日付検索</p>
-                            </b-row>
+                            <div id="searchDay">
+                                <b-form inline>
+                                    <label>日付</label>
+                                    <b-form-input v-model="searchDayStart" id="searchDayStart" size="sm"
+                                        class="mr-2 ml-2" autocomplete="off" type="date"
+                                        v-on:change="changeSearchDayStart">
+                                    </b-form-input>
+                                    ～
+                                    <b-form-input v-model="searchDayEnd" id="searchDayEnd" size="sm"
+                                        class="ml-2" autocomplete="off" type="date"
+                                        v-on:change="changeSearchDayEnd">
+                                    </b-form-input>
+                                </b-form>
+                            </div>
                         </b-col>
                     </b-row>
                     <b-row align-h="end">
@@ -168,6 +179,8 @@ Vue.component('invoice-list-payment', {
         searchInvoice: Function,
         rowClass: Function,
         countedFiles: Function,
+        searchDayStart: Date,
+        searchDayEnd: Date,
         searchInvoiceWord: String,
         invoicesIndicateCount: Number,
         invoicesIndicateIndex: Array,
@@ -183,6 +196,12 @@ Vue.component('invoice-list-payment', {
             let amount = invoice.invoice_items.map(item => item.count * Math.round(item.price)).reduce((a, b) => a + b);
             if (invoice.isTaxExp === true) return Math.round(amount * (1 + invoice.tax / 100));
             return amount;
+        },
+        changeSearchDayStart() {
+            this.$emit('emit-event-search-day-start', this.searchDayStart);
+        },
+        changeSearchDayEnd() {
+            this.$emit('emit-event-search-day-end', this.searchDayEnd);
         },
     },
 })

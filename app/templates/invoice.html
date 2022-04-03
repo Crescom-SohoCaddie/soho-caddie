@@ -27,6 +27,11 @@
                 transform: scale(1.6);
             }
 
+            #searchDay {
+                display: flex;
+                justify-content: right;
+            }
+
             #invoicetable td,
             #invoice_items_table td {
                 vertical-align: middle;
@@ -127,11 +132,17 @@
                 <b-row class="mb-5"></b-row>
 
                 <!-- 一覧 -->
-                <invoice-list :search-invoice-word="searchInvoiceWord" :select-invoice="selectInvoice"
+                <invoice-list v-if="procName=='normal'" :search-invoice-word="searchInvoiceWord"
+                    :select-invoice="selectInvoice" :search-invoice="searchInvoice"
+                    :invoices-indicate-count="invoicesIndicateCount" :invoices-indicate-index="invoicesIndicateIndex"
+                    :row-class="rowClass" :counted-files="countedFiles"
+                    @emit-event-is-invoices-show-all="updateIsInvoicesShowAll">
+                </invoice-list>
+                <invoice-list-payment v-else :search-invoice-word="searchInvoiceWord" :select-invoice="selectInvoice"
                     :search-invoice="searchInvoice" :invoices-indicate-count="invoicesIndicateCount"
                     :invoices-indicate-index="invoicesIndicateIndex" :row-class="rowClass" :counted-files="countedFiles"
-                    @emit-event="updateIsInvoicesShowAll">
-                </invoice-list>
+                    @emit-event-search-day-start="updateSearchDayStart" @emit-event-search-day-end="updateSearchDayEnd">
+                    </invoice-list>
             </div>
 
             <!-- 新規作成・詳細(更新)ページ -->
@@ -613,6 +624,8 @@
                 data: {
                     searchInvoiceWord: '',          //請求書検索
                     isInvoicesShowAll: false,               //請求書検索
+                    searchDayStart: '',             //請求書検索
+                    searchDayEnd: '',               //請求書検索
                     invoicesIndicateCount: 0,       //請求書検索
                     invoicesIndicateAmount: 0,      //一覧表示中請求書の合計金額
                     searchItemWord: '',             //商品選択モーダル検索
@@ -1058,6 +1071,12 @@
                         console.log(emitValue);
                         this.isInvoicesShowAll = emitValue;
                     },
+                    updateSearchDayStart(start) {
+                        this.searchDayStart = start;
+                    },
+                    updateSearchDayEnd(end) {
+                        this.searchDayEnd = end;
+                    }
                 },
                 mounted: function () {
                     this.invoice = JSON.parse(localStorage.getItem('invoice'));
@@ -1128,6 +1147,15 @@
                         let amount = 0;
                         if (this.isInvoicesShowAll === false)
                             invoices = invoices.filter(invoice => invoice.isPaid === false);
+                        if (this.searchDayStart != '' && this.searchDayEnd == '') {
+                            invoices = invoices.filter(invoice => invoice.applyDate >= this.searchDayStart);
+                        }
+                        if (this.searchDayStart == '' && this.searchDayEnd != '') {
+                            invoices = invoices.filter(invoice => invoice.applyDate <= this.searchDayEnd);
+                        }
+                        if (this.searchDayStart != '' && this.searchDayEnd != '') {
+                            invoices = invoices.filter(invoice => invoice.applyDate >= this.searchDayStart && invoice.applyDate <= this.searchDayEnd);
+                        }
                         let invoiceAmounts = invoices.map(
                             invoice => invoice.invoice_items.map(
                                 item => Math.round(item.count * Math.round(item.price) * (invoice.isTaxExp == true ? (1 + invoice.tax / 100) : 1))).reduce((a, b) => a + b));
