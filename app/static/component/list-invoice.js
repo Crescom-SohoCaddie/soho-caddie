@@ -23,7 +23,8 @@ Vue.component('invoice-list', {
                         </b-col>
                         <b-col sm>
                             <b-row align-h="end">
-                                <b-form-checkbox class="mr-3" @change="changeIsInvoicesShowAll" v-model="isInvoicesShowAll">全て表示</b-form-checkbox>
+                                <input type="checkbox" v-model="isInvoicesShowAll" v-on:change="changeIsInvoicesShowAll"
+                                id='isInvoiceShowAll'>全て表示</input>
                             </b-row>
                         </b-col>
                     </b-row>
@@ -66,9 +67,6 @@ Vue.component('invoice-list', {
         </b-row>
     </div>
     `,
-    // data: {
-    //     parentIsInvoicesShowAll: false,
-    // },
     props: {
         selectInvoice: Function,
         searchInvoice: Function,
