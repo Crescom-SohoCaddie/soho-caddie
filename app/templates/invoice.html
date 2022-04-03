@@ -1066,9 +1066,6 @@
                         closeMethods: ['overlay', 'button', 'escape'],
                         closeLabel: "Close",
                     });
-                    let url = new URL(window.location.href);
-                    let params = url.searchParams;
-                    console.log(params.get('proc')); // 5
                 },
                 updated: function () {
                     self = this;
@@ -1088,6 +1085,12 @@
                     pageName() {
                         if (this.$route.query.page == undefined) return 'index';
                         return this.$route.query.page;
+                    },
+                    procName() {
+                        let url = new URL(window.location.href);
+                        let params = url.searchParams.get('proc');
+                        if (params == undefined) return 'normal';
+                        return params;
                     },
                     // 逐次、数量＊単価の合計をする
                     sum: function () {
