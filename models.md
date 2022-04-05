@@ -4,6 +4,7 @@
 | --------- | ---------- | -------- | -------------------------------- | 
 | id        | id         | integer  |                                  | 
 | anyNumber | 任意番号   | integer  | ソート用。重複禁止。Null禁止。     | 
+| anyName   | 任意名     | string   | 対応履歴機能用。重複禁止。Null禁止。| 
 | name      | 名前       | string   | ログイン時のID                   | 
 | password  | パスワード | string   | ログイン時のパスワード           | 
 | group     | グループ   | string   | とりあえず入れておく             | 
@@ -18,6 +19,7 @@
 | 項目名           | 和名           | タイプ      |  備考                             | 
 | --------------- | --------------- | -------    |  -------------------------------- | 
 | id              | id              | integer    |                                   | 
+| anyNumber       | 任意番号         | integer    | ソート用。重複禁止。Null禁止。     | 
 | customerName    | 得意先名         | text       |                                   | 
 | customerKana    | ふりがな         | text       |  ジャンル分けするためのもの         | 
 | honorificTitle  | 敬称            | text       |                                   | 

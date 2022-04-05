@@ -49,13 +49,17 @@ def user_show(id):
 @app.route('/user', methods=['POST'])
 def user_create():
     data = request.json
-    query = User.query.filter(User.anyNumber == data.get('anyNumber'))
-    if db.session.query(query.exists()).scalar():
+    anyNum = User.query.filter(User.anyNumber == data.get('anyNumber'))
+    anyName = User.query.filter(User.anyName == data.get('anyName'))
+    if db.session.query(anyNum.exists()).scalar():
         return jsonify({"result": "error", "message": "入力した任意番号は既に存在します。存在しない値を入力してください。"}), 500
-    if data.get('anyNumber') is None or data.get('name') is None or data.get('password') is None or data.get('anyNumber') == '' or data.get('name') == '' or data.get('password') == '':
+    if db.session.query(anyName.exists()).scalar():
+        return jsonify({"result": "error", "message": "入力した任意名は既に存在します。存在しない値を入力してください。"}), 500
+    if data.get('anyNumber') is None or data.get('anyName') is None or data.get('name') is None or data.get('password') is None or data.get('anyNumber') == '' or data.get('anyName') == '' or data.get('name') == '' or data.get('password') == '':
         return jsonify({"result": "error", "message": "必須項目に空欄があります。値を入力してください。"}), 500
     newUser = User(
         anyNumber=data.get('anyNumber'),
+        anyName=data.get('anyName'),
         name=data.get('name'),
         password=generate_password_hash(data.get('password')),
         group=data.get('group'),
@@ -78,14 +82,18 @@ def user_create():
 @app.route('/user/<id>', methods=['PUT'])
 def user_update(id):
     data = request.json
-    query = User.query.filter(User.anyNumber == data.get('anyNumber'))
+    anyNum = User.query.filter(User.anyNumber == data.get('anyNumber'))
+    anyName = User.query.filter(User.anyName == data.get('anyName'))
     user = User.query.filter(User.id == id).one()
-    if db.session.query(query.exists()).scalar() and user.anyNumber != data.get('anyNumber'):
+    if db.session.query(anyNum.exists()).scalar() and user.anyNumber != data.get('anyNumber'):
         return jsonify({"result": "error", "message": "入力した任意番号は既に存在します。存在しない値を入力してください。"}), 500
-    if data.get('anyNumber') is None or data.get('name') is None or data.get('password') is None or data.get('anyNumber') == '' or data.get('name') == '' or data.get('password') == '':
+    if db.session.query(anyName.exists()).scalar() and user.anyName != data.get('anyName'):
+        return jsonify({"result": "error", "message": "入力した任意名は既に存在します。存在しない値を入力してください。"}), 500
+    if data.get('anyNumber') is None or data.get('anyName') is None or data.get('name') is None or data.get('password') is None or data.get('anyNumber') == '' or data.get('anyName') == '' or data.get('name') == '' or data.get('password') == '':
         return jsonify({"result": "error", "message": "必須項目に空欄があります。値を入力してください。"}), 500
 
     user.anyNumber = data.get('anyNumber')
+    user.anyName = data.get('anyName')
     user.name = data.get('name')
     user.password = generate_password_hash(data.get('password'))
     user.group = data.get('group')
@@ -172,7 +180,13 @@ def customer_show(id):
 @app.route('/customer', methods=['POST'])
 def customer_create():
     data = request.json
+    query = Customer.query.filter(Customer.anyNumber == data.get('anyNumber'))
+    if db.session.query(query.exists()).scalar():
+        return jsonify({"result": "error", "message": "入力した任意番号は既に存在します。存在しない値を入力してください。"}), 500
+    if data.get('anyNumber') is None or data.get('anyNumber') == '':
+        return jsonify({"result": "error", "message": "必須項目に空欄があります。値を入力してください。"}), 500
     newCustomer = Customer(
+        anyNumber=data.get('anyNumber'),
         customerName=data.get('customerName'),
         customerKana=data.get('customerKana'),
         honorificTitle=data.get('honorificTitle'),
@@ -209,8 +223,14 @@ def customer_create():
 @app.route('/customer/<id>', methods=['PUT'])
 def customer_update(id):
     data = request.json
+    query = Customer.query.filter(Customer.anyNumber == data.get('anyNumber'))
     customer = Customer.query.filter(Customer.id == id).one()
+    if db.session.query(query.exists()).scalar() and customer.anyNumber != data.get('anyNumber'):
+        return jsonify({"result": "error", "message": "入力した任意番号は既に存在します。存在しない値を入力してください。"}), 500
+    if data.get('anyNumber') is None or data.get('anyNumber') == '':
+        return jsonify({"result": "error", "message": "必須項目に空欄があります。値を入力してください。"}), 500
 
+    customer.anyNumber = data.get('anyNumber')
     customer.customerName = data.get('customerName')
     customer.customerKana = data.get('customerKana')
     customer.honorificTitle = data.get('honorificTitle')
@@ -316,7 +336,7 @@ def item_create():
     data = request.json
     query = Item.query.filter(Item.itemCode == data.get('itemCode'))
     if db.session.query(query.exists()).scalar() and data.get('itemCode') != None and data.get('itemCode') != '':
-        return jsonify({"result": "error", "message": "入力した任意番号は既に存在します。存在しない値を入力してください。"}), 500
+        return jsonify({"result": "error", "message": "入力した商品コードは既に存在します。存在しない値を入力してください。"}), 500
     newItem = Item(
         itemName=data.get('itemName'),
         itemCode=data.get('itemCode'),
@@ -351,7 +371,7 @@ def item_update(id):
     item = Item.query.filter(Item.id == id).one()
     query = Item.query.filter(Item.itemCode == data.get('itemCode'))
     if db.session.query(query.exists()).scalar() and item.itemCode != data.get('itemCode') and (data.get('itemCode') != None and data.get('itemCode') != ''):
-        return jsonify({"result": "error", "message": "入力した任意番号は既に存在します。存在しない値を入力してください。"}), 500
+        return jsonify({"result": "error", "message": "入力した商品コードは既に存在します。存在しない値を入力してください。"}), 500
 
     item.itemName = data.get('itemName')
     item.itemCode = data.get('itemCode')
