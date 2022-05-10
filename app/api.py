@@ -1735,6 +1735,7 @@ def setting_update(id):
     setting.isDisplayInvoiceStamp = data.get('isDisplayInvoiceStamp')
     setting.isDisplayDeliveryStamp = data.get('isDisplayDeliveryStamp')
     setting.defaultTax = data.get('defaultTax')
+    setting.isHideTabletMode = data.get('isHideTabletMode')
 
     newHistory = History(
         userName=current_user.id,

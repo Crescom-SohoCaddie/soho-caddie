@@ -340,6 +340,8 @@ class Setting(db.Model):
     # 設定
     defaultTax = db.Column(db.Integer, nullable=False,
                            default=10, server_default=db.text('10'))
+    isHideTabletMode = db.Column(
+        db.Boolean, nullable=False, default=False, server_default=db.text('0'))
     updatedAt = updatedAt = db.Column(
         db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 

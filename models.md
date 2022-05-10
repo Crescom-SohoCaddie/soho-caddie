@@ -265,4 +265,5 @@
 | isDisplayInvoiceStamp   | 印鑑請求書表示   | boolean     | 印刷時に表示するかどうか | 
 | isDisplayDeliveryStamp  | 印鑑納品書表示   | boolean     | 印刷時に表示するかどうか | 
 | defaultTax              | 初期消費税       | integer     | 請求・見積作成時に自動的に設定される消費税率 | 
+| isHideTabletMode        | tbモード非表示   | boolean     | タブレットモードへの切り替えボタンを非表示にするか否か | 
 | updatedAt               | 更新日時         | datetime    |                          | 
