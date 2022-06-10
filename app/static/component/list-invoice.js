@@ -32,7 +32,7 @@ var search = Vue.component('search', {
             })
                 .then(function (response) {
                     console.log(response);
-                    search.invoices = response.data;
+                    search.invoices = response.data.invoices;
                     self.countChanged = 0;
                 });
             this.changeInvoices();

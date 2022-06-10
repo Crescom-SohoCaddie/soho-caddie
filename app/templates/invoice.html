@@ -754,7 +754,7 @@
                                 console.log(response);
                                 if (offset == 0) {
                                     self.offset = 0;
-                                    self.invoices = response.data;
+                                    self.invoices = response.data.invoices;
                                 }
                                 else {
                                     response.data.map(invoice => self.invoices.push(invoice));

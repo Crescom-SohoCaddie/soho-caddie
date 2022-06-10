@@ -469,6 +469,9 @@ def invoice_index_v1():
         invoices = invoices.offset(offset)
     if limit:
         invoices = invoices.limit(limit)
+    totalRecordCount = invoices.count()
+    nowRecordCount = limit+(limit*offset)
+    isMore = True if nowRecordCount < totalRecordCount else False
 
     newHistory = History(
         userName=current_user.id,
@@ -478,7 +481,7 @@ def invoice_index_v1():
     )
     db.session.add(newHistory)
     db.session.commit()
-    return jsonify(InvoiceSchema(many=True).dump(invoices))
+    return jsonify({'invoices': InvoiceSchema(many=True).dump(invoices), 'isMore': isMore})
 
 
 @app.route('/v1/dust-invoices', methods=['GET'])
