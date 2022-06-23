@@ -143,36 +143,24 @@
                                             :formatter="formatterNumberAll" autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="決算月"
                                         label-for="closingMonth" label-align="right">
                                         <b-form-select v-model="customer.closingMonth" :options="closingMonth"
                                             size="sm">
                                         </b-form-select>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="得意先名"
                                         label-for="customerName" label-align="right">
                                         <b-form-input v-model="customer.customerName" id="customerName" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="敬称"
                                         label-for="honorificTitle" label-align="right">
                                         <b-form-select v-model="customer.honorificTitle" :options="selectHonorificTitle"
                                             size="sm"></b-form-select>
                                         </b-form-select>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="フリガナ"
                                         label-for="customerKana" label-align="right">
                                         <b-form-input id="input-live" v-model="customer.customerKana"
@@ -183,101 +171,65 @@
                                         </b-form-invalid-feedback>
                                         <b-form-text id="input-live-help">※全角カナ・英数字で入力(例)jマート1</b-form-text>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="部署"
                                         label-for="department" label-align="right">
                                         <b-form-input v-model="customer.department" id="department" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="郵便番号"
                                         label-for="postNumber" label-align="right">
                                         <b-form-input v-model="customer.postNumber" id="postNumber" size="sm"
                                             autocomplete="off" :formatter="formatter_postNum">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
 
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="住所1"
                                         label-for="address" label-align="right">
                                         <b-form-input v-model="customer.address" id="address" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="住所2"
                                         label-for="address" label-align="right">
                                         <b-form-input v-model="customer.addressSub" id="address" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="電話番号"
                                         label-for="telNumber" label-align="right">
                                         <b-form-input v-model="customer.telNumber" id="telNumber" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="FAX番号"
                                         label-for="faxNumber" label-align="right">
                                         <b-form-input v-model="customer.faxNumber" id="faxNumber" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="サイトURL"
                                         label-for="url" label-align="right">
                                         <b-form-input v-model="customer.url" id="url" size="sm" autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="email"
                                         label-for="email" label-align="right">
                                         <b-form-input v-model="customer.email" id="email" size="sm" autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="代表者名"
                                         label-for="representative" label-align="right">
                                         <b-form-input v-model="customer.representative" id="representative" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="担当者"
                                         label-for="manager" label-align="right">
                                         <b-form-input v-model="customer.manager" id="manager" size="sm"
                                             autocomplete="off">
                                         </b-form-input>
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-row>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="お客様区分"
                                         label-for="customerCategory" label-align="right">
                                         <b-form-radio-group required v-if="" v-model="customer.customerCategory"
@@ -305,13 +257,14 @@
                                             </a>
                                         </div>
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm>
                                     <b-form-group label-cols="4" label-cols-lg="2" label-size="sm" label="メモ"
                                         label-for="memo" label-align="right">
                                         <b-form-textarea v-model="customer.memo" size="sm" rows="4">
                                         </b-form-textarea>
                                     </b-form-group>
+                                </b-col>
+                                <b-col sm>
+                                    <iframe src="/invoice-page" width="100%" height="986px"></iframe>
                                 </b-col>
                             </b-row>
                         </b-card>
